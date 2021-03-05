@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,34 +30,11 @@ public class RecipeController {
     private final RecipeMapper recipeMapper;
 
     @PostMapping("/save")
-    public ResponseEntity<RecipeResponseDto> save(@RequestBody RecipeRequestDto dto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public RecipeResponseDto save(@RequestBody RecipeRequestDto dto) {
         Recipe recipe = recipeMapper.toEntity(dto);
         Recipe savedRecipe = recipeService.save(recipe);
-        RecipeResponseDto responseDto = recipeMapper.toDto(savedRecipe);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
-    }
-
-    @GetMapping()
-    public List<RecipeResponseDto> getAll() {
-        return recipeService.getAll()
-                .stream()
-                .map(recipeMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @PostMapping("/fork/{id}")
-    public ResponseEntity<RecipeResponseDto> fork(@RequestBody RecipeRequestDto dto,
-                                                  @PathVariable Long id) {
-        Recipe forkedRecipe = recipeMapper.toEntity(dto);
-        Optional<Recipe> parentRecipe = recipeService.getById(id);
-        if (parentRecipe.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        forkedRecipe.setParent(parentRecipe.get());
-        forkedRecipe.getPreviousVersions().add(parentRecipe.get());
-        Recipe updatedRecipe = recipeService.save(forkedRecipe);
-        RecipeResponseDto recipeResponseDto = recipeMapper.toDto(updatedRecipe);
-        return new ResponseEntity<>(recipeResponseDto, HttpStatus.OK);
+        return recipeMapper.toDto(savedRecipe);
     }
 
     @PutMapping("/modify/{id}")
@@ -72,6 +50,29 @@ public class RecipeController {
         Recipe recipeFromDb = recipeService.save(updatedRecipe);
         RecipeResponseDto responseDto = recipeMapper.toDto(recipeFromDb);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public List<RecipeResponseDto> getAll() {
+        return recipeService.getAll()
+                .stream()
+                .map(recipeMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping("/fork/{id}")
+    public ResponseEntity<RecipeResponseDto> fork(@RequestBody RecipeRequestDto dto,
+                                                  @PathVariable Long id) {
+        Optional<Recipe> parentRecipe = recipeService.getById(id);
+        if (parentRecipe.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Recipe forkedRecipe = recipeMapper.toEntity(dto);
+        forkedRecipe.setParent(parentRecipe.get());
+        forkedRecipe.getPreviousVersions().add(parentRecipe.get());
+        Recipe updatedRecipe = recipeService.save(forkedRecipe);
+        RecipeResponseDto recipeResponseDto = recipeMapper.toDto(updatedRecipe);
+        return new ResponseEntity<>(recipeResponseDto, HttpStatus.OK);
     }
 
     @GetMapping("/versions/{id}")

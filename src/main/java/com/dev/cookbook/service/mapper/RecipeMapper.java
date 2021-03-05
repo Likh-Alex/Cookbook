@@ -26,6 +26,7 @@ public class RecipeMapper {
         recipe.setPreamble(dto.getPreamble());
         recipe.setDescription(dto.getDescription());
         recipe.setPreviousVersions(new ArrayList<>());
+        recipe.setFirstVersion(true);
         recipe.setIngredients(dto.getIngredients());
         return recipe;
     }
