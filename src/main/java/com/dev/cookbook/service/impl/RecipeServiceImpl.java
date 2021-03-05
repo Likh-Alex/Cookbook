@@ -30,4 +30,9 @@ public class RecipeServiceImpl implements RecipeService {
     public List<Recipe> getAll() {
         return recipeRepository.findByOrderByPreamble();
     }
+
+    @Override
+    public void delete(Long id) {
+        recipeRepository.deleteById(id);
+    }
 }

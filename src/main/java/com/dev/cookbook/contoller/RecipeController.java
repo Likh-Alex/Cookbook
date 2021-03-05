@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/recipe")
+@RequestMapping("/recipes")
 @AllArgsConstructor
 public class RecipeController {
+    public static final String RECIPE_NOT_FOUND_MESSAGE = "Recipe not found";
     private final RecipeService recipeService;
     private final RecipeMapper recipeMapper;
 
@@ -84,5 +86,15 @@ public class RecipeController {
                 .map(recipeMapper::toDto)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        Optional<Recipe> recipeById = recipeService.getById(id);
+        if (recipeById.isEmpty()) {
+            return new ResponseEntity<>(RECIPE_NOT_FOUND_MESSAGE, HttpStatus.NOT_FOUND);
+        }
+        recipeService.delete(recipeById.get().getId());
+        return new ResponseEntity<>(recipeById.get().getPreamble() + " deleted", HttpStatus.OK);
     }
 }
