@@ -2,6 +2,7 @@ package com.dev.cookbook.dto.response;
 
 import com.dev.cookbook.entity.Ingredient;
 import com.dev.cookbook.entity.Recipe;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import lombok.Data;
@@ -9,10 +10,11 @@ import lombok.Data;
 @Data
 public class RecipeResponseDto {
     private Long id;
+    private Recipe parent;
     private String preamble;
     private String description;
-    private Set<Ingredient> ingredients;
+    private LocalDate dateCreated;
     private boolean isFirstVersion;
-    private Recipe parent;
+    private Set<Ingredient> ingredients;
     private List<Recipe> previousVersions;
 }
