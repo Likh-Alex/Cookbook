@@ -11,9 +11,9 @@
 - Recipes are sorted alphabetically (on any depth).
 
 ## In order to use the application
-- Download the source code
+- Download the [source code](https://github.com/Likh-Alex/Cookbook)
 - Project is delivered as Maven project
 - [Download and Install Maven](https://maven.apache.org/install.html)
 - Open in your IDE
-- Once you opened the project in the IDE run - `CookbookApplication` and application will start.
+- Once you opened the project in the IDE `run` - `CookbookApplication` and application will start.
 - `unit` tests for `RecipeMapper` and `RecipeController` included in the `test` directory. 
