@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -37,6 +38,7 @@ class RecipeMapperTest {
         recipe.setDescription(BASIC_DESCRIPTION);
         recipe.setIngredients(Set.of(basicIngredient));
         recipe.setFirstVersion(true);
+        recipe.setDateCreated(LocalDate.now());
 
 
         requestDto = new RecipeRequestDto();
@@ -50,6 +52,7 @@ class RecipeMapperTest {
         responseDto.setDescription(BASIC_DESCRIPTION);
         responseDto.setIngredients(Set.of(basicIngredient));
         responseDto.setFirstVersion(true);
+        responseDto.setDateCreated(LocalDate.now());
         responseDto.setPreviousVersions(new ArrayList<>());
     }
 

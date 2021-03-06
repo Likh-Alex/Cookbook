@@ -16,6 +16,7 @@ public class RecipeMapper {
         dto.setPreamble(recipe.getPreamble());
         dto.setDescription(recipe.getDescription());
         dto.setDateCreated(recipe.getDateCreated());
+        dto.setDateCreated(recipe.getDateCreated());
         boolean isFirstVersion = recipe.getPreviousVersions().size() == 0;
         dto.setFirstVersion(isFirstVersion);
         dto.setIngredients(recipe.getIngredients());
