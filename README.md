@@ -1,10 +1,10 @@
 # Cookbook Application
 
-##Application is used to manage `Recipes`
-###Application has following operations
-###Application is created using `Java` and `Spring boot`
-###Tests are created using `Junit` and `Mockito`
+### Application is used to manage `Recipes`
+### Application is created using `Java` and `Spring boot`
+### Tests are created using `Junit` and `Mockito`
 
+## Application has following operations
 - `Get` a list of `recipes` (date created, description)
 - `Add` a new `recipe`
 - `Add` a new `recipe` based on another one - culinary `fork` of a recipe. 
